@@ -2,85 +2,72 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CartRequest;
 use App\Models\Product;
 use Darryldecode\Cart\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+
 
 class CartController extends Controller
 {
-   
 
-    public function cartList(){
-        $cartItem = \Cart::getContent();
-
-        echo $cartItem;
+    public function cartList()
+    {
+        $cartItems = \Cart::getContent();
+        // dd($cartItems);
+        return view('cart', compact('cartItems'));
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function addToCart(Request $request)
     {
         \Cart::add([
-            'id'=> $request->id,
-            'name'=> $request->name,
-            'price'=> $request->price,
-            'quantity'=>$request->quantity,
-            'attributes'=> array(
-                'image'=> $request->image,
+            'id' => $request->id,
+            'name' => $request->name,
+            'price' => $request->price,
+            'quantity' => $request->quantity,
+            'attributes' => array(
+                'image' => $request->image,
             )
-            ]);
+        ]);
+        session()->flash('success', 'Product is Added to Cart Successfully !');
 
-            echo 'success';
-
+        return redirect()->route('cart.list');
     }
 
-   
-
- 
-
-   
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function updateCart(Request $request, Product $product)
+    public function updateCart(Request $request)
     {
         \Cart::update(
             $request->id,
             [
                 'quantity' => [
-                    'relative'=>false,
-                    'value'=>$request->quantity
+                    'relative' => false,
+                    'value' => $request->quantity
                 ],
             ]
-            );
-  echo 'updated';
+        );
 
+        session()->flash('success', 'Item Cart is Updated Successfully !');
+
+        return redirect()->route('cart.list');
     }
 
-
-    public function removeCart(Request $request){
+    public function removeCart(Request $request)
+    {
         \Cart::remove($request->id);
+        session()->flash('success', 'Item Cart Remove Successfully !');
 
-        echo 'removed';
-
+        return redirect()->route('cart.list');
     }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function clearALlCart()
+
+    public function clearAllCart()
     {
         \Cart::clear();
-        echo 'celar all';
 
+        session()->flash('success', 'All Item Cart Clear Successfully !');
+
+        return redirect()->route('cart.list');
     }
 }

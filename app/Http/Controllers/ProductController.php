@@ -13,7 +13,8 @@ class ProductController extends Controller
     {
         $products = Product::all();
 
-         echo $products;
+         return view('products', compact('products'));
+
     }
 
 
