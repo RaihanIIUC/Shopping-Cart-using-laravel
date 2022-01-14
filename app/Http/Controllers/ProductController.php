@@ -5,18 +5,61 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use App\Http\Resources\ProductCollection as ProductCollection;
+use App\Http\Resources\ProductResource as ProductResource;
+
 
 class ProductController extends Controller
 {
 
-    public function productList()
+    public function index()
     {
-        $products = Product::all();
-
-         return view('products', compact('products'));
-
+        return new ProductCollection(Product::all());
     }
 
+    // /**
+    //  * Store a newly created resource in storage.
+    //  *
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function store(Request $request)
+    // {
+    //     //
+    // }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Product  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Product $product)
+    {
+        return new ProductResource($product);
+    }
+
+    // /**
+    //  * Update the specified resource in storage.
+    //  *
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * @param  \App\Product  $product
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function update(Request $request, Product $product)
+    // {
+    //     //
+    // }
+
+    // /**
+    //  * Remove the specified resource from storage.
+    //  *
+    //  * @param  \App\Product  $product
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function destroy(Product $product)
+    // {
+    //     //
+    // }
     
 }
