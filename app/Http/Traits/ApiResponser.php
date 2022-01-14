@@ -34,5 +34,14 @@ trait ApiResponser
     {
         return $this->successResponser(['data' => $instance], $code);
     }
- 
+    protected function successMessage($message, $code)
+    {
+        return response()->json(['success' => $message, 'code' => $code], $code);
+    }
+
+    protected function errorMessage($message, $code)
+    {
+        return response()->json(['error' => $message, 'code' => $code], $code);
+    }
+
 }
